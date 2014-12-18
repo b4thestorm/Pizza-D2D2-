@@ -1,11 +1,13 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  before_action :set_customer, only: [:edit, :update, :destroy]
 
   def index
     @customers = Customer.all
   end
 
   def show
+    @customer = Customer.find(params[:id])
+    @spots = Spot.all
   end
 
 
