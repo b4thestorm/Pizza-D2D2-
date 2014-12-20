@@ -1,27 +1,48 @@
  <head>
     <style type="text/css">
-        html, body { height: 75%; margin: 10px; padding: 0;}
-        #map-canvas { height: 75%; margin: 50px; padding: 0;}
+        html, body { height: 80%; margin: 10px ; padding: 0;}
+        #map-canvas { height: 100%; margin: 20px; padding: 0;}
     </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXTMJKJVX7lAIi6j0EdJONxKC1gPtKj3M">
     </script>
     <script type="text/javascript">
       function initialize() {
-        var mylat  = <%=@customer.latitude%>;
-        var mylng = <%=@customer.longitude%>;
-        var myLatlng = new google.maps.LatLng(mylat,mylng);
+        var userlat  = <%=@customer.latitude%>;
+        var userlng = <%=@customer.longitude%>;
+        var userLatlng = new google.maps.LatLng(userlat,userlng);
         var mapOptions = {
-          center: { lat: mylat, lng: mylng},
-          zoom: 16
+          center: userLatlng,
+          zoom: 5
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
         var marker = new google.maps.Marker({
-            position: myLatlng,
+            position: userLatlng,
             map: map,
             title: 'You found me!'
-        });        
+        });
+        var bounds = new google.maps.LatLngBounds();
+        bounds.extend(marker.getPosition());
+        <% @spots.near([@customer.latitude, @customer.longitude], 0.5).each do |spot| %>
+          var myLatlng = new google.maps.LatLng(<%= spot.latitude %>,<%= spot.longitude %>);
+          var marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map,
+              icon: 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-fac150/shapecolor-color/shadow-1/border-dark/symbolstyle-white/symbolshadowstyle-dark/gradient-no/pizzaria.png',
+              title: '<%= spot.address  %>'
+          }); 
+          bounds.extend(marker.getPosition());
+        <% end %> 
+        console.log(map.getZoom()); 
+        map.fitBounds(bounds);   
+        console.log(map.getZoom()); 
+        map.setZoom(map.getZoom()-1); 
+        console.log(map.getZoom()); 
+        if(map.getZoom()> 15){
+          map.setZoom(15);
+          }
+        map.panTo(userLatlng);
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
