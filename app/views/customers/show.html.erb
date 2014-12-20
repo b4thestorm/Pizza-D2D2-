@@ -1,42 +1,36 @@
-<p id="notice"><%= notice %></p>
-
- <%=@customer.address%></br>
- 
- <%= link_to 'Edit', edit_customer_path(@customer) %> |
-<%= link_to 'Back', customers_path %></br>
-
-
  <head>
     <style type="text/css">
-      html, body, #map-canvas { height: 75%; margin: 0; padding: 0;}
+        html, body { height: 75%; margin: 10px; padding: 0;}
+        #map-canvas { height: 75%; margin: 50px; padding: 0;}
     </style>
-
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBXTMJKJVX7lAIi6j0EdJONxKC1gPtKj3M">
     </script>
-
     <script type="text/javascript">
       function initialize() {
+        var mylat  = <%=@customer.latitude%>;
+        var mylng = <%=@customer.longitude%>;
+        var myLatlng = new google.maps.LatLng(mylat,mylng);
         var mapOptions = {
-          center: { lat: <%=@customer.latitude%>, lng: <%=@customer.longitude%>},
-          zoom: 8
+          center: { lat: mylat, lng: mylng},
+          zoom: 16
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'You found me!'
+        });        
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
-
   </head>
-
   <body>
-<div id="map-canvas"></div>
+    <p id="notice"><%= notice %></p>
+
+     <%=@customer.address%></br>
+    <%= link_to 'Edit', edit_customer_path(@customer) %> |
+    <%= link_to 'Back', customers_path %></br>
+    <div id="map-canvas"></div>
   </body>
-
-
-
-
-
-
-
-
