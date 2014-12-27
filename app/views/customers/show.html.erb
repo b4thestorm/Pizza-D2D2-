@@ -38,9 +38,7 @@
         <% end %> 
         map.fitBounds(bounds);
           google.maps.event.addListenerOnce(map,'bounds_changed',function() {
-            console.log("boundchanged");
             google.maps.event.addListenerOnce(map, 'center_changed', function() {
-              console.log("center_changed");
                 while (!map.getBounds().contains(bounds.getNorthEast()) || !map.getBounds().contains(bounds.getSouthWest())) {
                   map.setZoom(map.getZoom()-1);
                 }
