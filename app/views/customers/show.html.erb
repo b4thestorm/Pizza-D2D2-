@@ -13,7 +13,7 @@
         var userLatlng = new google.maps.LatLng(userlat,userlng);
         var mapOptions = {
           center: userLatlng,
-          zoom: 5
+          zoom: 10
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
@@ -23,6 +23,8 @@
             title: 'You found me!'
         });
         var bounds = new google.maps.LatLngBounds();
+
+
         bounds.extend(marker.getPosition());
         <% @spots.near([@customer.latitude, @customer.longitude], 0.5).each do |spot| %>
           var myLatlng = new google.maps.LatLng(<%= spot.latitude %>,<%= spot.longitude %>);
@@ -34,15 +36,17 @@
           }); 
           bounds.extend(marker.getPosition());
         <% end %> 
-        console.log(map.getZoom()); 
-        map.fitBounds(bounds);   
-        console.log(map.getZoom()); 
-        map.setZoom(map.getZoom()-1); 
-        console.log(map.getZoom()); 
-        if(map.getZoom()> 15){
-          map.setZoom(15);
-          }
-        map.panTo(userLatlng);
+        map.fitBounds(bounds);
+          google.maps.event.addListenerOnce(map,'bounds_changed',function() {
+            console.log("boundchanged");
+            google.maps.event.addListenerOnce(map, 'center_changed', function() {
+              console.log("center_changed");
+                while (!map.getBounds().contains(bounds.getNorthEast()) || !map.getBounds().contains(bounds.getSouthWest())) {
+                  map.setZoom(map.getZoom()-1);
+                }
+              });
+              map.setCenter(userLatlng);
+        });        
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
