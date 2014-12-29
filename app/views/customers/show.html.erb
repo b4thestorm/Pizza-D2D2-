@@ -24,14 +24,13 @@
         });
         var bounds = new google.maps.LatLngBounds();
 
-
         bounds.extend(marker.getPosition());
-        <% @spots.near([@customer.latitude, @customer.longitude], 0.5).each do |spot| %>
+        <% @spots.near([@customer.latitude, @customer.longitude], 1).each do |spot| %>
           var myLatlng = new google.maps.LatLng(<%= spot.latitude %>,<%= spot.longitude %>);
           var marker = new google.maps.Marker({
               position: myLatlng,
               map: map,
-              icon: 'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-fac150/shapecolor-color/shadow-1/border-dark/symbolstyle-white/symbolshadowstyle-dark/gradient-no/pizzaria.png',
+              icon:  '<%= asset_path('pizzamarker.png')%>',
               title: '<%= spot.address  %>'
           }); 
           bounds.extend(marker.getPosition());
