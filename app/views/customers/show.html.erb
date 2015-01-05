@@ -8,8 +8,10 @@
     </script>
     <script type="text/javascript">
       function initialize() {
-        var userlat  = <%=@customer.latitude%>;
-        var userlng = <%=@customer.longitude%>;
+        var userlat  = <%=@lat%>;
+        //@customer.latitude
+        var userlng = <%=@lon%>;
+        //@customer.longitude
         var userLatlng = new google.maps.LatLng(userlat,userlng);
         var mapOptions = {
           center: userLatlng,
@@ -23,9 +25,10 @@
             title: 'You found me!'
         });
         var bounds = new google.maps.LatLngBounds();
-
+        //@customer.latitude
+        //@customer.longitude
         bounds.extend(marker.getPosition());
-        <% @spots.near([@customer.latitude, @customer.longitude], 1).each do |spot| %>
+        <% @spots.near([@lat, @lon ], 1).each do |spot| %>
           var myLatlng = new google.maps.LatLng(<%= spot.latitude %>,<%= spot.longitude %>);
           var marker = new google.maps.Marker({
               position: myLatlng,

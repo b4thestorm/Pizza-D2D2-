@@ -1,6 +1,60 @@
 <h1>New customer</h1>
 
-<%= render 'form' %>
+<%= form_for(@customer) do |f| %>
+  <% if @customer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+      <ul>
+      <% @customer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <div>
+      <%= f.label :address%>
+      <%= f.text_field :address%>
+    </div>
+    <div>
+      <%= f.label :latitude%>
+      <%=f.text_field :latitude%>
+    </div>
+    <div>
+      <%= f.label :longitude%>
+      <%=f.text_field :longitude%>
+    </div>
+    <%= f.submit 'Find Yourself'%>
+  </div>
+<% end %>
+
+Latitude: <%=@latitude.to_s%> <span id= "latitude"></span></br>
+Longitude: <%=@longitude.to_s%> <span id= "longitude"></span></br>
+<%=@customer_loc.to_s%>  
+
+
+
+
 
 
 <%= link_to 'Back', customers_path %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

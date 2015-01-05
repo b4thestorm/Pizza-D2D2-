@@ -2,17 +2,17 @@
 <%= link_to 'Add a Pizza Spot', new_spot_path%></br>
 <%= link_to 'Find Your Location', new_customer_path,  id:'loc'%>
 
-<script>
-   var position = function(pos) {
-   	var lat = pos.coords.latitude,
-   		long = pos.coords.longitude;
+// <script>
+//    var position = function(pos) {
+//    	var lat = pos.coords.latitude,
+//    		long = pos.coords.longitude;
 
-   }
-   document.getElementId('loc').onClick = function(){
-   	navigator.geolocation.getCurrentPosition(position);
-   	return false;
-   	}
-   	// getElementId preps the button to trigger the response. the response gets stored in the variable position
-</script>
+//    }
+//    document.getElementId('loc').onClick = function(){
+//    	navigator.geolocation.getCurrentPosition(position);
+//    	return false;
+//    	}
+//    	// getElementId preps the button to trigger the response. the response gets stored in the variable position
+// </script>
  
         

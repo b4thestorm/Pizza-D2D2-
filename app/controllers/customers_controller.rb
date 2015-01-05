@@ -8,11 +8,19 @@ class CustomersController < ApplicationController
   def show
     @customer = Customer.find(params[:id])
     @spots = Spot.all
+    @lat = session[:latitude]
+    @lon = session[:longitude]
   end
 
 
   def new
+
     @customer = Customer.new
+    @customer_loc = request.location
+    @latitude = @customer_loc.data['latitude']
+    session[:latitude] = @latitude
+    @longitude = @customer_loc.data['longitude']
+    session[:longitude] = @longitude
   end
 
   def edit
